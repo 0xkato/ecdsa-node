@@ -5,24 +5,31 @@ import { toHex } from 'ethereum-cryptography/utils';
 import { keccak256 } from "ethereum-cryptography/keccak";
 
 
-function Wallet({ address, setAddress, balance, setBalance, privateKey, setPrivateKey, userSign, setUserSign, signHash}) {
+function Wallet({ address, setAddress, balance, setBalance, privateKey, setPrivateKey, setUserSign}) {
   async function onChange(evt) {
     const privateKey = evt.target.value;
     setPrivateKey(privateKey); 
-    const address = toHex(secp.getPublicKey(privateKey));
 
     const messageHash = "caa0540304ec126f737a65ee31d171f89f0b1f46759730759f2ac6fc9556ecdb";
 
-    const userSign = secp.sign(messageHash, privateKey, { recovered: true });
-    const signHash= toHex(await userSign);
+    const userSign = await secp.sign(messageHash, privateKey);
+    const signHash= toHex(userSign);
+    const publicKey = await secp.getPublicKey(privateKey);
 
     setUserSign(userSign);
-    console.log(signHash);
+    console.log("Sign hash: ", signHash);
 
-    //const recover = secp.recoverPublicKey("caa0540304ec126f737a65ee31d171f89f0b1f46759730759f2ac6fc9556ecdb", toHex(userSign), recoveryBit);
-    //console.log(await recover);
+    
+    const isSigned = await secp.verify(userSign, messageHash, publicKey, {recovered: Boolean = true});
+    console.log("Is signed ",isSigned);
 
+    const recovered = await secp.recoverPublicKey(messageHash,userSign, 1);
 
+    const address = toHex(secp.getPublicKey(privateKey));
+    console.log("The address:", await address);
+    
+    console.log("Recovered public Key: ", toHex(await recovered));
+    console.log("public Key: ",toHex(await publicKey));
 
     setAddress(address);
     if (address) {
@@ -30,6 +37,7 @@ function Wallet({ address, setAddress, balance, setBalance, privateKey, setPriva
         data: { balance },
       } = await server.get(`balance/${address}`);
       setBalance(balance);
+      console.log(balance);
     } else {
       setBalance(0);
     }
