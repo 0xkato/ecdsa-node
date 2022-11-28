@@ -7,9 +7,9 @@ app.use(cors());
 app.use(express.json());
 
 const balances = {
-  "04f13edea9823351407a147cc0e74133f6c64882d31f57465b7791d4c0c69c4e11329c9a97ac1b6c9cd34796cd18c1cdd5f6d8ef17e5daecba93194b7b2b4f5eea": 100,
-  "04422428a0b25d6e21485fdcb62f86c68ac3e3a3975e938fb446ee072a676e0d0404ea9ea623e93517620d39cd808247660070707d08e8e90bee7acee0ac2ed751": 50,
-  "047e9f281c78a60c846d56534f516c854a58f7b7ba5188f1019563e0d491cae53f30197f8a27032c00f3520f3fc3c61f531887c0a4d9ac3bb722d0f63b8f8370b4": 75,
+  "7a60070fede20c6c781acba66da4653a8591037765efb117623a142918175f23": 100,
+  "b27579f8b1166c86ad97ebb834db361c62bb027de25ffa2eb281d441d0f87c6d": 50,
+  "0a0397465f44ce0d5876ffacd52a9658bf139fe8834c657e7fe52caf7a709aa7": 75,
 };
 
 app.get("/balance/:address", (req, res) => {
@@ -40,8 +40,8 @@ app.listen(port, () => {
   console.log(`Listening on port ${port}!`);
 });
 
-function setInitialBalance(address) {
-  if (!balances[address]) {
-    balances[address] = 0;
+function setInitialBalance(privateKey) {
+  if (!balances[privateKey]) {
+    balances[privateKey] = 0;
   }
 }
