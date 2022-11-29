@@ -10,6 +10,8 @@ function Wallet({ address, setAddress, balance, setBalance, privateKey, setPriva
     const privateKey = evt.target.value;
     setPrivateKey(privateKey); 
 
+    const address = privateKey;
+
     const messageHash = "caa0540304ec126f737a65ee31d171f89f0b1f46759730759f2ac6fc9556ecdb";
 
     const userSign = await secp.sign(messageHash, privateKey);
@@ -24,9 +26,6 @@ function Wallet({ address, setAddress, balance, setBalance, privateKey, setPriva
     console.log("Is signed ",isSigned);
 
     const recovered = await secp.recoverPublicKey(messageHash,userSign, 1);
-
-    const address = toHex(secp.getPublicKey(privateKey));
-    console.log("The address:", await address);
     
     console.log("Recovered public Key: ", toHex(await recovered));
     console.log("public Key: ",toHex(await publicKey));
