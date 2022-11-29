@@ -40,8 +40,8 @@ app.listen(port, () => {
   console.log(`Listening on port ${port}!`);
 });
 
-function setInitialBalance(privateKey) {
-  if (!balances[privateKey]) {
-    balances[privateKey] = 0;
+function setInitialBalance(address) {
+  if (!balances[address]) {
+    balances[address] = 0;
   }
 }
